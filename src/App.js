@@ -1,25 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState, useEffect } from 'react';
+
+import Header from './Containers/Header'
+import Main from './Containers/Main';
+import Footer from './Containers/Footer';
 
 function App() {
+  const [tasksRemaining, setTasksRemaining] = useState(0)
+  const [todos, setTodos] = useState([
+    // {
+    //     title: "Grab some Pizza",
+    //     completed: false
+    // },
+    // {
+    //     title: "Do your workout",
+    //     completed: false
+    // },
+    // {
+    //     title: "Hangout with friends",
+    //     completed: false
+    // }
+])
+  useEffect(()=>{
+    setTasksRemaining(todos.filter(todo => !todo.completed).length) 
+  },[todos])
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="todo-app__root">
+      <Header />
+      <Main 
+        todos={todos} 
+        setTodos={setTodos}
+      />
+      {tasksRemaining===0 ? (<></>) : <Footer tasksRemaining={tasksRemaining} />}
     </div>
-  );
+  )
 }
 
 export default App;
