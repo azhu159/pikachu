@@ -27,7 +27,7 @@ const Main = ({todos, setTodos}) => {
         setInput(e.target.value)
     }
     const addTodo = title => {
-        const newTodos = [...todos, {title, completed: false}]
+        const newTodos = [...todos, {title, completed: false, display: true}]
         setTodos(newTodos)
         console.log(`${title} added success!!!`)
     }   
@@ -36,6 +36,12 @@ const Main = ({todos, setTodos}) => {
         const newTodos = [...todos]
         newTodos[index].completed = !newTodos[index].completed
         setTodos(newTodos)
+    }
+
+    const deleteTodo = index => {
+        const newTodos = [...todos];
+        newTodos.splice(index, 1);
+        setTodos(newTodos);
     }
 
     return (
@@ -50,8 +56,9 @@ const Main = ({todos, setTodos}) => {
             />
             <ul className='todo-app__list' id="todo-list">
                 {todos.map((todo, index)=>(
-                    <li className='todo-app__item' key={index} onClick={()=>completeTodo(index)}>
-                        <div className='todo-app__checkbox' >
+                    todo.display===false ? (<></>) :(
+                    <li className='todo-app__item' key={index} >
+                        <div className='todo-app__checkbox' onClick={()=>completeTodo(index)} >
                             <input type="checkbox" style={todo.completed ? {backgroundColor:'#26ca299b'} : {backgroundColor:'rgba(99, 99, 99, 0.698)'} }/>
                             <label style={todo.completed ? {backgroundColor:'#26ca299b'} : {backgroundColor:'rgba(99, 99, 99, 0.698)'} }></label>
                         </div>
@@ -60,8 +67,9 @@ const Main = ({todos, setTodos}) => {
                         >
                             {todo.title}
                         </h1>
-                        <img src='./x.png' className='todo-app__item-x' alt="delete" />
+                        <img src='./x.png' className='todo-app__item-x' alt="delete" onClick={()=>deleteTodo(index)}  />
                     </li> 
+                    )
                 ))}
             </ul>
         </section>
